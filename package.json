@@ -1,0 +1,22 @@
+{
+  "name": "manoj-kumar-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio of Manoj Kumar G — static site generated from content data.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node --watch-path=src --watch-path=scripts scripts/dev.mjs",
+    "test": "node --test tests/unit/*.test.mjs",
+    "test:e2e": "node --test --test-concurrency=1 tests/e2e/*.test.mjs",
+    "check": "npm test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "axe-core": "^4.13.0",
+    "playwright-core": "^1.63.0"
+  }
+}
