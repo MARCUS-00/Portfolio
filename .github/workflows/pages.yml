@@ -1,0 +1,51 @@
+# Builds the site and publishes only the generated dist/ folder to GitHub Pages.
+# Nothing is committed back to the repository, so unrelated files are never touched.
+# One-time setup: repository Settings -> Pages -> Source: "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Runs only in the GitHub Pages user-site repository. The same source in MARCUS-00/Portfolio
+    # is published by Vercel (vercel.json), where this workflow would have no Pages site to deploy.
+    if: github.repository == 'MARCUS-00/marcus-00.github.io'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --omit=dev
+      - run: npm test
+      - run: npm run build
+        env:
+          SITE_URL: https://marcus-00.github.io
+          BASE_PATH: /
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

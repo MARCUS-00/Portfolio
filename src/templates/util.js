@@ -4,6 +4,9 @@ export function esc(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
 
+/* A date range never breaks across lines ("Jan — May 2026" stays together). */
+export const keepTogether = (s) => String(s).replace(/ /g, "\u00a0");
+
 /* Join the truthy parts of an HTML list. */
 export const join = (parts, sep = "") => parts.filter(Boolean).join(sep);
 

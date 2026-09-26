@@ -4,21 +4,21 @@
  * it everywhere.
  */
 export default {
-  name: "Manoj Kumar G",
+  name: "Manoj Kumar",
   city: "Bengaluru",
   location: "Bengaluru, India",
-  role: "Software Engineer",
-  focus: "ML Systems · Data Platforms · Applied ML",
-  availability: "Open to software engineering roles",
-  contactLead: "Open to software engineering roles.",
-  lede: "I build machine-learning models and data pipelines, and turn them into working software — a model you can send an image to, and a data warehouse that feeds a report.",
+  role: "Data Analyst",
+  focus: "SQL · Python · Power BI · Excel · Statistics · Forecasting",
+  availability: "Open to data analyst opportunities",
+  contactLead: "Open to data analyst opportunities.",
+  lede: "I turn raw data into analysis, dashboards and validated findings — cleaning and querying it with SQL and Python, reporting it in Power BI, and testing results with statistics, forecasting and applied ML.",
 
   email: "mailtomanojkumar07@gmail.com",
   /* Shown on the contact page only, as on the résumé. */
   phone: "+91 9738027546",
   github: "https://github.com/MARCUS-00",
-  /* Omitted until a LinkedIn URL is confirmed. Setting it restores the link on every surface. */
-  linkedin: null,
+  /* Confirmed by Manoj (Sep 2026). Set to null to remove the link everywhere. */
+  linkedin: "https://www.linkedin.com/in/manoj-kumar-analytics",
   /* Path under src/static/. */
   resume: "/Manoj_Kumar_Resume.pdf",
 };

@@ -7,12 +7,7 @@ import { start } from "./browser.mjs";
 const AXE = createRequire(import.meta.url).resolve("axe-core/axe.min.js");
 const ROUTES = ["/", "/work/", "/experience/", "/skills/", "/about/", "/contact/", "/p/osteoscan/", "/p/olist/", "/p/c3i/", "/404.html"];
 
-/*
- * The default (Dark + High contrast) must be clean, contrast included. Only when a visitor
- * explicitly switches High contrast off do the prototype's softer greys return; that state
- * may fail colour contrast and nothing else.
- */
-const PALETTE_CONTRAST = "color-contrast";
+/* High contrast is permanent, so every reachable state (Dark, Light) must be clean, contrast included. */
 
 let env;
 before(async () => { env = await start(); });
@@ -35,7 +30,7 @@ async function audit(opts, setup) {
   return found;
 }
 
-test("the default Dark + High contrast state has no accessibility violations at all", async () => {
+test("the default Dark state has no accessibility violations at all", async () => {
   for (const viewport of [{ width: 1440, height: 900 }, { width: 375, height: 812 }]) {
     const found = await audit({ viewport }, async (page) => {
       if (viewport.width < 700 && (await page.isVisible(".menu-btn[data-js]"))) await page.click(".menu-btn[data-js]");
@@ -44,28 +39,20 @@ test("the default Dark + High contrast state has no accessibility violations at 
   }
 });
 
-/* Stored display choices are applied by the boot script, so set them once and reload. */
-const withPrefs = (prefs, extra) => async (page) => {
-  const want = JSON.stringify(prefs);
-  if (await page.evaluate((w) => JSON.stringify({ theme: localStorage.getItem("mk-theme"), contrast: localStorage.getItem("mk-contrast") }) !== w, want)) {
-    await page.evaluate((p) => { for (const [k, v] of Object.entries(p)) if (v) localStorage.setItem("mk-" + k, v); }, prefs);
+/* The stored Light mode choice is applied by the boot script, so set it once and reload. */
+const inLight = (extra) => async (page) => {
+  if (await page.evaluate(() => localStorage.getItem("mk-theme") !== "light")) {
+    await page.evaluate(() => localStorage.setItem("mk-theme", "light"));
     await page.reload();
   }
   if (extra) await extra(page);
 };
 
-test("Light mode, with High contrast on (default) and off, has no violations at all, contrast included", async () => {
-  for (const prefs of [{ theme: "light", contrast: null }, { theme: "light", contrast: "normal" }]) {
-    for (const viewport of [{ width: 1440, height: 900 }, { width: 375, height: 812 }]) {
-      const found = await audit({ viewport }, withPrefs(prefs, async (page) => {
-        if (viewport.width < 700 && (await page.isVisible(".menu-btn[data-js]"))) await page.click(".menu-btn[data-js]");
-      }));
-      assert.deepEqual(found, {}, `${JSON.stringify(prefs)} @${viewport.width}`);
-    }
+test("Light mode has no violations at all, contrast included", async () => {
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 375, height: 812 }]) {
+    const found = await audit({ viewport }, inLight(async (page) => {
+      if (viewport.width < 700 && (await page.isVisible(".menu-btn[data-js]"))) await page.click(".menu-btn[data-js]");
+    }));
+    assert.deepEqual(found, {}, `light @${viewport.width}`);
   }
-});
-
-test("with High contrast switched off, the only finding is the softer greys' contrast", async () => {
-  const found = await audit({ viewport: { width: 1440, height: 900 } }, withPrefs({ theme: null, contrast: "normal" }));
-  assert.deepEqual(Object.keys(found).filter((id) => id !== PALETTE_CONTRAST), []);
 });

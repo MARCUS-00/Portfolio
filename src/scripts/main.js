@@ -6,7 +6,6 @@
 import { initDisplay } from "./display.js";
 import { initMenu } from "./menu.js";
 import { initTopology } from "./topology.js";
-import { initSkillsMap } from "./skills-map.js";
 import { initMotion } from "./motion.js";
 import { initCaseNav } from "./case-nav.js";
 
@@ -19,7 +18,7 @@ if (reduce.addEventListener) reduce.addEventListener("change", sync);
 
 /* Motion arms reveals before case navigation scrolls to a deep-linked section,
    so elements are measured from where the page starts. */
-for (const init of [initDisplay, initMenu, initTopology, initSkillsMap, initMotion, initCaseNav]) {
+for (const init of [initDisplay, initMenu, initTopology, initMotion, initCaseNav]) {
   try {
     init({ motion });
   } catch (err) {

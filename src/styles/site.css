@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════════
-   Manoj Kumar G — portfolio
+   Manoj Kumar — portfolio
    Visual system transcribed from the approved prototype. Layout responds to
    the .site container (container queries + cqi units), exactly as the
    prototype's frame did, so proportions match at every width.
@@ -15,8 +15,8 @@
 :root{
   --bg:#0C1013; --surface:#12181D; --tech:#161E24; --tech-2:#1C262D; --evidence:#1A1F22;
   --line:#232E36; --line-2:#36444E; --line-3:#4E5F6B;
-  --text:#EDF1F3; --text-2:#A6B2BB; --text-3:#74828C; --text-4:#56646E;
-  --brass:#D2B172; --brass-2:#EBD3A0; --brass-dim:#6B5A33; --rust:#BC6B57;
+  --text:#EDF1F3; --text-2:#A6B2BB; --text-3:#8A97A0; --text-4:#7D8D99;
+  --brass:#D2B172; --brass-2:#EBD3A0; --brass-dim:#6B5A33; --rust:#C37B69;
   /* surfaces the prototype set as literals, tokenised so the light theme can restate them */
   --page:#070A0C; --fill:#D2B172; --fill-2:#EBD3A0; --on-fill:#11161A; --gate-on:#20241F; --rule-soft:#1A232A; --grid-line:#1B242B;
   --stratum-1:#101619; --stratum-2:#131A1F; --stratum-3:#161E24; --stratum-4:#1C262D;
@@ -28,18 +28,18 @@
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
   color-scheme:dark;
 }
-/* Light mode: the same system on a light ground. Every text/surface pair meets WCAG AA. */
+/* High contrast is permanent: the token values above and below are the high-contrast set, so
+   secondary text and marks meet WCAG AA in both themes, with or without JavaScript.
+   Light mode: the same system on a light ground. */
 :root[data-theme="light"]{
   --bg:#F4F5F6; --surface:#FFFFFF; --tech:#ECEFF1; --tech-2:#E3E8EB; --evidence:#F6F1E6;
-  --line:#D5DCE0; --line-2:#B9C3CA; --line-3:#8E9BA4;
-  --text:#0F1417; --text-2:#3A4750; --text-3:#4F5C66; --text-4:#5A6771;
-  --brass:#80611F; --brass-2:#5F4714; --brass-dim:#C8AE78; --rust:#A1492F;
+  --line:#D5DCE0; --line-2:#8E9BA4; --line-3:#6B7780;
+  --text:#000000; --text-2:#1F2A31; --text-3:#2E3A42; --text-4:#36434C;
+  --brass:#6A4F14; --brass-2:#5F4714; --brass-dim:#C8AE78; --rust:#8A3A22;
   --page:#E6E9EB; --fill:#D2B172; --fill-2:#E0C389; --on-fill:#11161A; --gate-on:#F1E8D3; --rule-soft:#E1E6E9; --grid-line:#DDE2E5;
   --stratum-1:#F7F8F9; --stratum-2:#F1F3F5; --stratum-3:#ECEFF1; --stratum-4:#E6EAED;
   color-scheme:light;
 }
-/* On a light ground the faded rust of a "ghost" reading would drop below AA; show it at full strength. */
-:root[data-theme="light"] .tick[data-kind="ghost"]{opacity:1}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:calc(var(--header-h) + 1rem);-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;background:var(--page);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;font-variation-settings:"wdth" 100,"wght" 400;-webkit-font-smoothing:antialiased}
@@ -49,8 +49,7 @@ a{color:inherit}
 .vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
 
 /* site container (the prototype's frame at desktop width) */
-.site{isolation:isolate;container-type:inline-size;container-name:site;width:100%;max-width:1400px;margin:0 auto;background:var(--bg);position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
-.site>main{flex:1 0 auto}
+.site{isolation:isolate;container-type:inline-size;container-name:site;width:100%;max-width:1400px;margin:0 auto;background:var(--bg);position:relative}
 .skip{position:absolute;left:-9999px;top:.5rem;z-index:80;background:var(--fill);color:var(--on-fill);padding:.5rem .8rem;font-weight:600}
 .skip:focus{left:.5rem}
 
@@ -74,7 +73,7 @@ a.menu-btn{display:inline-flex;align-items:center;text-decoration:none;line-heig
 .drawer a{display:block;text-decoration:none;color:var(--text);padding:1rem var(--pad);border-top:1px solid var(--line);font-size:15px;font-variation-settings:"wdth" 96,"wght" 500}
 .drawer a:first-child{border-top:0}
 .drawer a[aria-current="page"]{color:var(--brass)}
-/* display controls (Light mode, High contrast): toggles styled like the topology's lane buttons */
+/* display control (Light mode): a toggle styled like the topology's lane buttons */
 .display-ctl{display:flex;gap:2px}
 .disp-btn{appearance:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-width:32px;min-height:32px;padding:0;background:transparent;border:1px solid transparent;color:var(--text-3);font-family:var(--sans);font-size:13px;font-variation-settings:"wdth" 92,"wght" 500;transition:color var(--f) var(--e),border-color var(--f) var(--e),background-color var(--f) var(--e)}
 .disp-btn svg{width:16px;height:16px;flex:none}
@@ -106,8 +105,10 @@ h1,h2,h3,h4{margin:0;font-variation-settings:"wdth" 104,"wght" 600;line-height:1
 /* views: each page is one view; it enters the way the prototype's views did */
 .js .view{animation:vin var(--m) var(--e) both}
 [data-dir="back"] .view{animation-name:vinb}
-@keyframes vin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes vinb{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+/* Transform only: the page content is visible from its first paint (no fade from opacity 0),
+   so the largest element counts as painted immediately (LCP) and nothing waits on the motion. */
+@keyframes vin{from{transform:translateY(10px)}to{transform:none}}
+@keyframes vinb{from{transform:translateY(-10px)}to{transform:none}}
 .section{padding:clamp(3rem,7cqi,6rem) var(--pad);border-top:1px solid var(--line)}
 .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:clamp(2rem,4cqi,3rem);flex-wrap:wrap}
 .section-head h1,.section-head h2{font-size:clamp(1.35rem,2.8cqi,1.85rem)}
@@ -291,7 +292,7 @@ html:not(.js) .lane-btns{display:none}
 .scale-band{position:absolute;top:6px;height:11px;background:var(--brass-dim);opacity:.34;left:calc(var(--from)*1%);width:calc((var(--to) - var(--from))*1%);transform-origin:left}
 .tick{position:absolute;top:2px;width:1px;height:19px;background:var(--line-3);left:calc(var(--at)*1%)}
 .tick[data-kind="ref"]{background:var(--text-3)}
-.tick[data-kind="ghost"]{background:var(--rust);opacity:.75}
+.tick[data-kind="ghost"]{background:var(--rust)}
 .tick[data-kind="value"]{background:var(--brass);width:2px;height:27px;top:0;box-shadow:0 0 0 3px color-mix(in srgb,var(--brass) 18%,transparent)}
 .tick-label{position:absolute;top:22px;transform:translateX(-50%);white-space:nowrap;font-family:var(--mono);font-size:9.5px;color:var(--text-3)}
 /* The value label sits on its own row, clear of reference labels, so nearby readings never collide. */
@@ -314,6 +315,43 @@ html:not(.js) .lane-btns{display:none}
 .evidence-box .t{font-size:13.5px;color:var(--text-2);font-variation-settings:"wdth" 92,"wght" 500}
 .evidence-box .d{font-size:12.5px;color:var(--text-3);max-width:42ch}
 .ev-link{overflow-wrap:anywhere}
+.ev-code{margin:0;border:1px solid var(--line);background:var(--tech);min-width:0}
+.ev-code-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.4rem 1.2rem;padding:.75rem .9rem;border-bottom:1px solid var(--line);background:var(--surface)}
+.ev-code-h .more{font-size:12.5px;overflow-wrap:anywhere}
+/* Wrapped rather than scrolled, so no part of the query hides off-screen on a phone. */
+.ev-code pre{margin:0;padding:1rem .9rem;white-space:pre-wrap;overflow-wrap:anywhere;font-family:var(--mono);font-size:12px;line-height:1.65;color:var(--text-2);tab-size:4}
+/* case-study brief and findings: a label column and a text column, like the other rows */
+.brief{margin:0;display:grid;border-top:1px solid var(--line)}
+.brief-row{display:grid;gap:.3rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.brief dt{font-size:12px;color:var(--text-3);font-variation-settings:"wdth" 86,"wght" 500;letter-spacing:.02em}
+.brief dd{margin:0;font-size:.97rem;line-height:1.65;color:var(--text-2);max-width:66ch}
+.chart{margin:0 0 clamp(1.25rem,3cqi,1.75rem);border:1px solid var(--line);background:var(--evidence)}
+.chart-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.3rem 1.2rem;padding:.75rem .9rem;border-bottom:1px solid var(--line)}
+.chart-t{font-size:13px;color:var(--text);font-variation-settings:"wdth" 92,"wght" 600}
+.bars{width:100%;border-collapse:collapse;font-size:13px}
+.bars th,.bars td{padding:.7rem clamp(.5rem,1.8cqi,.9rem);text-align:left;vertical-align:middle}
+.bars thead th{font-size:11.5px;font-weight:500;color:var(--text-3);border-bottom:1px solid var(--line)}
+.bars tbody tr+tr th,.bars tbody tr+tr td{border-top:1px solid var(--rule-soft)}
+.bars tbody th{white-space:nowrap;font-weight:600;color:var(--text)}
+/* The value column takes the remaining width, so bar lengths stay proportional at any size. */
+.bars td:nth-child(2){width:100%}
+.bar-cell{display:flex;align-items:center;gap:.7rem}
+.bar{display:block;height:14px;width:calc(var(--w) * 1%);max-width:calc(100% - 4.5rem);min-width:2px;background:var(--line-3)}
+[data-accent] .bar{background:var(--rust)}
+.bars .num{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--text-2)}
+[data-accent] .num{color:var(--text)}
+.bars .n{white-space:nowrap;font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--text-3);text-align:right}
+.bars thead th:last-child{text-align:right}
+@container site (min-width:700px){.bars thead th{white-space:nowrap}}
+.findings{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--line)}
+.finding{display:grid;gap:.3rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.f-type{font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--text-3)}
+.finding[data-type="recommendation"] .f-type,.finding[data-type="next-step"] .f-type{color:var(--brass)}
+.f-t{margin:0;font-size:.97rem;line-height:1.65;color:var(--text);max-width:66ch}
+.finding[data-type="interpretation"] .f-t{color:var(--text-2)}
+.ev-media{margin:0;border:1px solid var(--line);background:var(--tech)}
+.ev-media img{display:block;width:100%;height:auto}
+.ev-media .cap{display:block;padding:.7rem .9rem;border-top:1px solid var(--line)}
 .case-exit{display:flex;gap:.6rem;flex-wrap:wrap;padding:clamp(1.75rem,4cqi,2.5rem) var(--pad) clamp(3rem,6cqi,4.5rem);border-top:1px solid var(--line)}
 
 .rows{display:grid}
@@ -325,16 +363,49 @@ h2.r-k,h3.r-k{display:block}
 .row .r-b{font-size:.97rem;color:var(--text-2);max-width:62ch;margin:0}
 .row .r-b+.more{display:inline-block;margin-top:.7rem}
 .row .ev-note{display:block;margin-top:.35rem}
+/* experience, education and about rows: who/where/when on the left, substance on the right */
+.row .r-org{display:block;margin-top:.2rem;font-size:.95rem;color:var(--text-2)}
+.xp-meta .r-m{display:block;margin-top:.35rem}
+.xp-body,.edu-body{display:grid;gap:.9rem;justify-items:start;min-width:0}
+.edu-body{gap:.4rem}
+.edu-body .r-org{margin-top:0}
+.edu-status{margin-top:.25rem}
+.did{margin:0;padding-left:1.1rem;display:grid;gap:.5rem;font-size:.95rem;line-height:1.6;color:var(--text-2);max-width:66ch}
+.did li::marker{color:var(--text-4)}
+.xp-body .lbl{margin-bottom:-.35rem}
+.xp-body .proj-foot{margin-top:0}
+.about-lead{margin:0 0 clamp(2rem,4cqi,3rem);max-width:54ch;font-size:clamp(1.12rem,2.3cqi,1.4rem);line-height:1.5;color:var(--text);font-variation-settings:"wdth" 100,"wght" 500}
+.about-rows{border-top:1px solid var(--line-2)}
+.about-rows .r-b+.r-b{margin-top:.85rem}
+.about-rows+.actions{margin-top:0;padding-top:clamp(1.75rem,3.5cqi,2.5rem);border-top:1px solid var(--line)}
 .skill-list{list-style:none;margin:0;padding:0}
 .skill{display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .7rem;padding:.55rem 0;border-top:1px solid var(--rule-soft)}
 .skill:first-of-type{border-top:0}
 .skill .s-n{font-size:.95rem;color:var(--text);font-variation-settings:"wdth" 94,"wght" 500}
-.skill-sep{color:var(--text-4);font-size:11.5px}
-.proof{position:relative;font-size:12px;color:var(--brass);text-decoration:none;border-bottom:1px solid var(--brass-dim)}
-.motion .skill,.motion .proof{transition:opacity var(--f) var(--e),color var(--f) var(--e),transform var(--f) var(--e)}
-.skill.dim{opacity:.34}
-.proof.rel{color:var(--brass-2);border-bottom-color:var(--brass);transform:translateX(2px)}
-.proof[data-t="listed"]{color:var(--text-4);border:0}
+/* Wide screens: two columns per group, so the inventory scans in one or two screens. */
+@container site (min-width:960px){
+  .skill-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(2rem,4cqi,3.5rem);align-content:start}
+  .skill:nth-of-type(2){border-top:0}
+}
+/* Work page lead, and Home's compact "Selected work" previews */
+.section-head:has(+ .page-lead){margin-bottom:clamp(.9rem,2cqi,1.25rem)}
+.page-lead+.projects>.proj:first-child{padding-top:clamp(2rem,4.5cqi,3.25rem)}
+.page-lead{margin:0 0 clamp(1.75rem,4cqi,2.75rem);max-width:54ch;font-size:clamp(1.05rem,2.2cqi,1.3rem);line-height:1.5;color:var(--text-2)}
+.previews{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--line)}
+.prev-item{border-bottom:1px solid var(--line);min-width:0}
+.prev-link{display:grid;gap:.5rem;align-content:start;height:100%;padding:clamp(1.25rem,3cqi,1.75rem) 0;text-decoration:none;color:inherit}
+.prev-title{font-size:clamp(1.6rem,3.6cqi,2.2rem);font-variation-settings:"wdth" 112,"wght" 700;line-height:1;letter-spacing:-.025em}
+.motion .prev-title{transition:transform var(--m) var(--e),color var(--f) var(--e)}
+.prev-link:hover .prev-title{color:var(--brass-2)}
+.motion .prev-link:hover .prev-title{transform:translateX(4px)}
+.prev-moment{margin:.2rem 0 0;display:grid;gap:.2rem}
+.prev-moment .num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:1.35rem;color:var(--brass)}
+.prev-moment .mc{font-size:12.5px;color:var(--text-3);max-width:44ch}
+.prev-link .open{margin-top:.35rem}
+@container site (min-width:900px){
+  .previews{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(1.5rem,3cqi,2.75rem);border-top:0}
+  .prev-item{border-top:1px solid var(--line);border-bottom:0}
+}
 
 .contact-lead{font-size:clamp(1.5rem,4cqi,2.6rem);line-height:1.18;letter-spacing:-.022em;font-variation-settings:"wdth" 106,"wght" 600;max-width:18ch;margin:0}
 .contact-rows{margin-top:clamp(2rem,4cqi,3rem)}
@@ -368,7 +439,7 @@ h2.r-k,h3.r-k{display:block}
 .hero-meta a:hover{color:var(--text);border-bottom-color:var(--brass)}
 .hdr-link{display:inline-flex;align-items:center;min-height:32px;padding:0 .45rem;font-size:13px;color:var(--text-2);text-decoration:none;font-variation-settings:"wdth" 92,"wght" 500}
 .hdr-link:hover{color:var(--text)}
-.grp{font-size:.95rem;color:var(--text-3);font-variation-settings:"wdth" 86,"wght" 500;margin:clamp(2rem,4cqi,2.75rem) 0 .4rem}
+.grp{font-size:1.05rem;color:var(--text-2);font-variation-settings:"wdth" 96,"wght" 600;margin:clamp(2.75rem,5cqi,3.75rem) 0 0;padding-bottom:.8rem;border-bottom:1px solid var(--line-2)}
 .grp:first-of-type{margin-top:0}
 
 /* container queries */
@@ -387,6 +458,7 @@ h2.r-k,h3.r-k{display:block}
   .proj-viz{grid-column:2;grid-row:1}
   .row{grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:1.75rem;align-items:baseline}
   .contact-row{grid-template-columns:130px 1fr;gap:1.5rem;align-items:baseline}
+  .brief-row,.finding{grid-template-columns:140px minmax(0,1fr);gap:1.5rem;align-items:baseline}
   .statement{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(2rem,5cqi,4rem);align-items:start}
   .statement .sub{margin-top:.4rem}
 }
@@ -432,10 +504,11 @@ h2.r-k,h3.r-k{display:block}
 @media (prefers-reduced-motion:no-preference){
   /* Level 2 — page entrance: header once per visit, then identity, copy, actions, the system */
   .entry .masthead{animation:enter 300ms var(--e) both}
-  .name{animation:enter var(--s) var(--e) both}
-  .role{animation:enter var(--s) var(--e) 60ms both}
-  .role-sub{animation:enter var(--s) var(--e) 110ms both}
-  .lede{animation:enter var(--s) var(--e) 170ms both}
+  /* Identity (name, role, skills, intro) rises without fading: readable from the first paint. */
+  .name{animation:rise var(--s) var(--e) both}
+  .role{animation:rise var(--s) var(--e) 60ms both}
+  .role-sub{animation:rise var(--s) var(--e) 110ms both}
+  .lede{animation:rise var(--s) var(--e) 170ms both}
   .actions{animation:enter var(--s) var(--e) 230ms both}
   .hero-meta{animation:enter var(--s) var(--e) 230ms both}
   .topo{animation:enter var(--s) var(--e) 290ms both}
@@ -457,6 +530,7 @@ h2.r-k,h3.r-k{display:block}
   .rv{opacity:0}
 }
 @keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes rise{from{transform:translateY(10px)}to{transform:none}}
 @keyframes gate-pulse{0%{border-color:var(--brass)}35%{border-color:var(--brass-2)}100%{border-color:var(--brass)}}
 
 @media (hover:none){
@@ -471,13 +545,6 @@ h2.r-k,h3.r-k{display:block}
   .rv{opacity:1!important;transform:none!important}
   .proj::before{display:none}
 }
-
-/* High contrast is the default in both themes: secondary text and marks meet WCAG AA. A visitor can
-   switch it off with the page control (data-contrast="normal"), which restores the prototype's softer
-   greys. Works without JavaScript. Last in the file so it overrides the base rules at equal specificity. */
-:root:not([data-contrast="normal"]){--text-3:#8A97A0; --text-4:#7D8D99; --rust:#C37B69}
-:root[data-theme="light"]:not([data-contrast="normal"]){--text:#000000; --text-2:#1F2A31; --text-3:#2E3A42; --text-4:#36434C; --brass:#6A4F14; --rust:#8A3A22; --line-2:#8E9BA4; --line-3:#6B7780}
-:root:not([data-contrast="normal"]) .tick[data-kind="ghost"]{opacity:1}
 
 @media print{
   body,.site{background:#fff;color:#000}

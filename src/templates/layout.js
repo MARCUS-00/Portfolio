@@ -11,7 +11,7 @@ export const NAV = [
 /*
  * Runs before first paint, inline, so there is no flash of the wrong state:
  *  - redirects the prototype's hash routes (#/p/olist/validation) to real paths
- *  - applies the visitor's saved Light mode / High contrast choice
+ *  - applies the visitor's saved Light mode choice (High contrast is permanent, in the CSS)
  *  - marks JS as available (.js) and motion as allowed (.motion)
  *  - .entry on arrival from outside the site (header entrance plays once per visit)
  *  - data-dir="back" when leaving a case study for a top-level page (view enters from above)
@@ -19,7 +19,7 @@ export const NAV = [
 function bootScript(base) {
   return `(function(d,w){var h=d.documentElement,l=w.location,m=/^#\\/(.*)$/.exec(l.hash);` +
     `if(m&&l.pathname===${JSON.stringify(base)}){var p=m[1].replace(/\\/+$/,"");l.replace(${JSON.stringify(base)}+(p?p+"/":""));return}` +
-    `try{if(localStorage.getItem("mk-theme")==="light")h.setAttribute("data-theme","light");if(localStorage.getItem("mk-contrast")==="normal")h.setAttribute("data-contrast","normal")}catch(e){}` +
+    `try{if(localStorage.getItem("mk-theme")==="light")h.setAttribute("data-theme","light")}catch(e){}` +
     `h.classList.add("js");try{if(!w.matchMedia("(prefers-reduced-motion: reduce)").matches)h.classList.add("motion")}catch(e){}` +
     `var r=null;try{r=d.referrer?new URL(d.referrer):null}catch(e){}` +
     `if(r&&r.origin===l.origin){if(/\\/p\\//.test(r.pathname)&&!/\\/p\\//.test(l.pathname))h.setAttribute("data-dir","back")}else h.classList.add("entry")` +
@@ -62,6 +62,8 @@ export function documentShell({ c, url, assets, page }) {
     site.verification && site.verification.google ? `<meta name="google-site-verification" content="${esc(site.verification.google)}">` : "",
     site.verification && site.verification.bing ? `<meta name="msvalidate.01" content="${esc(site.verification.bing)}">` : "",
     `<meta name="theme-color" content="#0C1013">`,
+    /* Structured data, when a page supplies it. "<" is escaped so the JSON can never close the script. */
+    page.jsonLd ? `<script type="application/ld+json">${JSON.stringify(page.jsonLd).replace(/</g, "\\u003c")}</script>` : "",
     `<meta name="color-scheme" content="dark light">`,
     `<link rel="icon" href="${url("favicon.svg")}" type="image/svg+xml">`,
     `<link rel="preload" href="${assets.fontPreload}" as="font" type="font/woff2" crossorigin>`,
@@ -91,14 +93,13 @@ ${footer(c, url)}
 `;
 }
 
-/* Display controls: Light mode and High contrast, as toggle buttons. Icon-only in the header,
-   where space is tight; labelled in full in the mobile menu. Hidden without JavaScript. */
+/* Display control: Light mode, as a toggle button. Icon-only in the header, where space is tight;
+   labelled in full in the mobile menu. Hidden without JavaScript. High contrast is always on. */
 const ICON = {
   theme: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.2v1.9M8 12.9v1.9M1.2 8h1.9M12.9 8h1.9M3.2 3.2l1.35 1.35M11.45 11.45l1.35 1.35M3.2 12.8l1.35-1.35M11.45 4.55l1.35-1.35" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
-  contrast: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.8a6.2 6.2 0 0 1 0 12.4z" fill="currentColor"/></svg>',
 };
-/* Pressed state as served matches the default (Dark, High contrast on); the script syncs saved choices. */
-const PREFS = [{ key: "theme", label: "Light mode", on: false }, { key: "contrast", label: "High contrast", on: true }];
+/* Pressed state as served matches the default (Dark); the script syncs a saved choice. */
+const PREFS = [{ key: "theme", label: "Light mode", on: false }];
 function displayControls(compact) {
   return PREFS.map((p) => compact
     ? `<button class="disp-btn" type="button" data-pref="${p.key}" aria-pressed="${p.on}" title="${p.label}">${ICON[p.key]}<span class="vh">${p.label}</span></button>`

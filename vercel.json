@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
+  "buildCommand": "SITE_URL=https://portfolio-b2ub.vercel.app npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install --omit=dev",
   "trailingSlash": true,

@@ -1,54 +1,43 @@
 /*
- * Skills, grouped. `proof` lists the project ids where the skill is actually
- * demonstrated; an empty list renders as "no system here" (claimed on the
- * résumé, not shown on this site). Only link a project that really uses it.
+ * Skills: a competency inventory, answering "what can he work with?". Where each skill was
+ * demonstrated is the job of the Work case studies, which list their own tools, so skills do
+ * not link to projects.
+ *
+ * Grouped by kind and ordered for a data-analyst reader: the analytics and BI stack first,
+ * then SQL and data engineering, analysis, statistics, and the supporting ML, engineering and
+ * web skills last. Within a group, the most role-relevant items come first.
+ *
+ * Source: the résumé's key and technical skills (Aug 2026), plus methods shown in the case
+ * studies. No proficiency levels, ratings or bars. Do not add: REST endpoints, A/B testing,
+ * statsmodels (no current source).
  */
 export default [
   {
-    group: "Languages",
-    items: [
-      { name: "Python", proof: ["osteoscan", "olist", "c3i"] },
-      { name: "SQL", proof: ["olist"] },
-    ],
+    group: "Data analytics and BI",
+    items: ["SQL", "Python", "Power BI", "Excel (pivot tables, VLOOKUP/XLOOKUP)", "DAX", "Tableau", "pandas", "NumPy"],
   },
   {
-    group: "Data engineering",
-    items: [
-      { name: "Python ETL", proof: ["olist"] },
-      { name: "PostgreSQL 16", proof: ["olist"] },
-      { name: "Docker", proof: ["olist", "osteoscan"] },
-      { name: "Warehouse modelling", proof: ["olist"] },
-      { name: "GitHub Actions CI", proof: ["olist", "osteoscan"] },
-    ],
+    group: "SQL and data engineering",
+    items: ["PostgreSQL", "MySQL", "Joins, CTEs and window functions", "Python ETL", "Warehouse modelling (star schema)", "Data-quality testing"],
+  },
+  {
+    group: "Analysis and reporting",
+    items: ["Data analysis", "Data cleaning", "Data visualisation and dashboarding", "KPI and business reporting", "Cohort and RFM analysis", "Root-cause analysis"],
+  },
+  {
+    group: "Statistics and forecasting",
+    items: ["Hypothesis testing (Mann-Whitney U)", "Time-series forecasting (Holt-Winters, SARIMA)", "Forecast benchmarking", "Bootstrap confidence intervals", "Patient-grouped cross-validation"],
   },
   {
     group: "Machine learning",
-    items: [
-      { name: "TensorFlow", proof: ["osteoscan"] },
-      { name: "EfficientNet-B0", proof: ["osteoscan"] },
-      { name: "XGBoost", proof: ["c3i"] },
-      { name: "PyTorch", proof: ["c3i"] },
-      { name: "SHAP", proof: ["c3i"] },
-      { name: "Bootstrap confidence intervals", proof: ["osteoscan"] },
-      { name: "Patient-grouped cross-validation", proof: ["osteoscan"] },
-    ],
+    items: ["scikit-learn", "XGBoost", "TensorFlow", "Keras", "PyTorch", "Deep learning", "SHAP", "FinBERT", "OpenCV", "Optuna"],
   },
   {
-    group: "Analytics and BI",
-    items: [
-      { name: "Power BI", proof: [] },
-      { name: "DAX", proof: ["olist"] },
-      { name: "Forecast benchmarking", proof: ["olist"] },
-      { name: "Hypothesis testing", proof: ["olist"] },
-      { name: "Excel", proof: ["olist"] },
-      { name: "pandas", proof: [] },
-    ],
+    group: "Engineering and tools",
+    items: ["Git", "GitHub", "GitHub Actions CI", "Docker", "Jupyter", "Flask", "Streamlit", "Jira"],
   },
   {
-    group: "Services and tooling",
-    items: [
-      { name: "Flask", proof: ["osteoscan"] },
-      { name: "Streamlit", proof: ["c3i"] },
-    ],
+    group: "Web",
+    items: ["JavaScript", "HTML", "CSS"],
   },
-];
+].map((g) => ({ group: g.group, items: g.items.map((name) => ({ name })) }));

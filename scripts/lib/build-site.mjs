@@ -46,10 +46,14 @@ export async function buildSite({ content, outDir, base = "/" }) {
   if (errors.length) throw new Error("Content has problems:\n  " + errors.join("\n  "));
 
   const url = makeUrl(base);
-  const social = content.site.socialImage;
-  if (social && !(await readFile(join(SRC, "static", social.replace(/^\/+/, ""))).catch(() => null))) {
-    throw new Error(`Content has problems:
-  site.socialImage "${social}" is not a file in src/static/`);
+  /* Every referenced image must be a real file: nothing renders as a broken stand-in. */
+  const images = [["site.socialImage", content.site.socialImage],
+    ...content.projects.map((p) => [`projects (${p.id}).evidence.media`, p.evidence && p.evidence.media && p.evidence.media.src])];
+  for (const [where, src] of images) {
+    if (src && !(await readFile(join(SRC, "static", src.replace(/^\/+/, ""))).catch(() => null))) {
+      throw new Error(`Content has problems:
+  ${where} "${src}" is not a file in src/static/`);
+    }
   }
   await rm(outDir, { recursive: true, force: true });
   await mkdir(join(outDir, "assets", "fonts"), { recursive: true });
@@ -95,6 +99,8 @@ export async function buildSite({ content, outDir, base = "/" }) {
       `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
       canonical.map((p) => `  <url><loc>${origin}${url(p)}</loc></url>`).join("\n") + `\n</urlset>\n`);
   }
+  /* Static hosts such as GitHub Pages serve the folder as-is; this stops any Jekyll pass. */
+  await writeFile(join(outDir, ".nojekyll"), "");
   await writeFile(join(outDir, "robots.txt"), `User-agent: *\nAllow: /\n` + (origin ? `Sitemap: ${origin}${url("sitemap.xml")}\n` : ""));
 
   return { pages: pages.map(([p]) => p), assets };
